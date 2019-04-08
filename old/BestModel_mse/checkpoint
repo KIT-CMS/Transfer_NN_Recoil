@@ -1,0 +1,6 @@
+model_checkpoint_path: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-6100"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-2400"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-2500"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-3100"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-3300"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_MSE_80GSApplication_mm/NNmodel-6100"

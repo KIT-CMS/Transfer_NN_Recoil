@@ -1,0 +1,6 @@
+model_checkpoint_path: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-28500"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-4500"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-12700"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-15400"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-19600"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/trainingtrue_WSamplefalse_Channelmm_PlotSummer17Thesis_mm/CV/NNmodel_CV-28500"

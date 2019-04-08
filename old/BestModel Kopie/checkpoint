@@ -1,0 +1,6 @@
+model_checkpoint_path: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-15200"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-200"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-300"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-900"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-2400"
+all_model_checkpoint_paths: "/storage/b/tkopf/NTupleApplication/files/HttTraining_TrainingImplementation_ES80_mm/NNmodel-15200"
