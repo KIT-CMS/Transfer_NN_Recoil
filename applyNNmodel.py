@@ -84,11 +84,9 @@ def applyModel(outputD, ll, training, lossFct):
 
     for i in range(0,10):
         start, end = i*applicationsplit, (i+1)*applicationsplit+1
-        print("shape Inputs", Inputs.shape)
         predictions_i = sess.run(f, {x: preprocessing_input.transform(np.array_split(Inputs, 10, axis=0)[i])})
         if training == "true":
             predictions_CV_i = sess_CV.run(f_CV, {x_CV: preprocessing_input.transform(np.array_split(Inputs, 10, axis=0)[i])})
-        print("shape np.array_split(Inputs, 10, axis=0)[i]", np.array_split(Inputs, 10, axis=0)[i].shape)
         if i==0:
             predictions = predictions_i
             if training == "true":

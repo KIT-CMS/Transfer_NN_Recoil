@@ -301,6 +301,7 @@ def getNNModel(outputDir, loss_fct, ll, plotsD):
     
     #Initialize Training steps
     min_valloss = [1000000000000]
+    max_steps = 300000
     saveStep = 100
     early_stopping = 0
     best_model = 0
@@ -324,7 +325,7 @@ def getNNModel(outputDir, loss_fct, ll, plotsD):
     pickle.dump(preprocessing_o, open("preprocessing_output.pickle", "wb"))    
 
 
-    for i_step in range(300000):
+    for i_step in range(max_steps):
 
         batch_train_idx = np.random.choice(np.arange(data_train.shape[0]), batchsize, p=batch_prob, replace=False)
         batch_val_idx = np.random.choice(np.arange(data_val.shape[0]), batchsize, p=batch_prob_val, replace=False)
@@ -353,7 +354,7 @@ def getNNModel(outputDir, loss_fct, ll, plotsD):
             else:
                 early_stopping += 1
                 print("increased early stopping to ", early_stopping)
-            if early_stopping == 100:
+            if early_stopping == 120:
                 break
             min_valloss.append(loss_)
             print('gradient step No ', i_step)

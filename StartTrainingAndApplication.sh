@@ -33,13 +33,12 @@ fi
 plots_directory=$plots_di${trainingsname}_${lepton}/
 
 #python getNNinputs.py $lepton $mergedFile $files_directory $plots_directory $WSample
-if [ "$training"  = true ]; then
-	python Training.py $files_directory $loss_fct $lepton $plots_directory
+#if [ "$training"  = true ]; then
+	#python Training.py $files_directory $loss_fct $lepton $plots_directory
 	#python Training_CV.py $files_directory $loss_fct $lepton $plots_directory
-fi
+	#fi
 #python applyNNmodel.py $lepton $files_directory $training $loss_fct
-#python prepareOutputFile.py $files_directory $lepton $plots_directory
-#python Plot.py $mergedFile $files_directory $plots_directory $lepton $WSample
+python prepareOutputFile.py $files_directory $lepton $plots_directory $mergedFile
 
 cp *.py $plots_directory
 cp Start*.sh $plots_directory

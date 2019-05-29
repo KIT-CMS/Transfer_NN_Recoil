@@ -7,6 +7,7 @@ import sys
 import h5py
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import pickle
 import sys
 from matplotlib.lines import Line2D
 
@@ -35,7 +36,6 @@ def moving_average(data_set, periods):
 
 
 def getModel(outputDir, loss_fct, ll, plotsD):
-    start = time.time()
     Inputs, Targets, Weights = loadInputsTargetsWeights(outputDir, ll)
     if loss_fct == 'relResponseAsypTPVRange':
         Inputs, Targets, Weights, PV = loadInputsTargetsPVWeights(outputDir, ll)
@@ -51,7 +51,7 @@ def getModel(outputDir, loss_fct, ll, plotsD):
 
     #Get Datasets for training and validation
     Inputs_train, Inputs_test = Inputs[training_idx,:], Inputs[test_idx,:]
-    Targets_train, Targets_test = Targets[training_idx,:], Targets[test_idx,:
+    Targets_train, Targets_test = Targets[training_idx,:], Targets[test_idx,:]
     train_val_splitter = 0.9
     train_train_idx_idx = np.random.choice(np.arange(training_idx.shape[0]), int(training_idx.shape[0]*train_val_splitter), replace=False)
     train_train_idx = training_idx[train_train_idx_idx]
@@ -97,7 +97,7 @@ def getModel(outputDir, loss_fct, ll, plotsD):
 
     #Define batches
     batch_train = [data_train, labels_train, weights_train]
-    batch_val = [data_val, labels_val, weights_val]v
+    batch_val = [data_val, labels_val, weights_val]
     logits_train, f_train= NNmodel(x, reuse=False)
     logits_val, f_val= NNmodel(x_, reuse=True)
 
@@ -110,24 +110,19 @@ def getModel(outputDir, loss_fct, ll, plotsD):
             tf.losses.mean_squared_error(labels=y_, predictions=logits_val))
         minimize_loss = tf.train.AdamOptimizer().minimize(loss_train)
     elif (loss_fct=="relResponseAsypTRange"):
-        from Training import costExpectedRelAsypTRange, costExpectedRelAsyHighpTRange
+        from Training import costExpectedRelAsypTRange
         pTRanges = []
         pTRanges = getpTRanges(Boson_Pt)
         loss_train = costExpectedRelAsypTRange(y, logits_train, w, pTRanges)
         loss_val = costExpectedRelAsypTRange(y_, logits_val, w_, pTRanges)
-        loss_train_H = costExpectedRelAsyHighpTRange(y, logits_train, w, pTRanges)
-        loss_val_H = costExpectedRelAsyHighpTRange(y_, logits_val, w_, pTRanges)
         minimize_loss = tf.train.AdamOptimizer().minimize(loss_train)
     elif (loss_fct=="relResponseAsypTPVRange"):
-        from Training import costExpectedRelAsypTPVRange, costExpectedRelAsyHighpTPVRange
-        pTRanges = []
+        from Training import costExpectedRelAsypTPVRange
+        pTRanges, PVRanges = [], []
         pTRanges = getpTRanges(Boson_Pt)
-        PVRanges = []
         PVRanges = getPVRanges(PV)
         loss_train = costExpectedRelAsypTPVRange(y, logits_train, w, pTRanges, PVRanges)
         loss_val = costExpectedRelAsypTPVRange(y_, logits_val, w_, pTRanges, PVRanges)
-        loss_train_H = costExpectedRelAsyHighpTPVRange(y, logits_train, w, pTRanges, PVRanges)
-        loss_val_H = costExpectedRelAsyHighpTPVRange(y_, logits_val, w_, pTRanges, PVRanges)
         minimize_loss = tf.train.AdamOptimizer().minimize(loss_train)
     else:
         sys.exit("Error, no suitable loss declared")
@@ -149,6 +144,7 @@ def getModel(outputDir, loss_fct, ll, plotsD):
     
     #Initialize Training steps
     min_valloss = [1000000000000]
+    max_steps = 300000
     saveStep = 100
     early_stopping = 0
     best_model = 0
@@ -166,8 +162,7 @@ def getModel(outputDir, loss_fct, ll, plotsD):
     preprocessing_output = pickle.load(open("preprocessing_output.pickle", "rb"))
 
 
-    for i_step in range(300000):
-        start_loop = time.time()
+    for i_step in range(max_steps):
         batch_train_idx = np.random.choice(np.arange(data_train.shape[0]), batchsize, p=batch_prob, replace=False)
         batch_val_idx = np.random.choice(np.arange(data_val.shape[0]), batchsize, p=batch_prob_val, replace=False)
 
@@ -177,7 +172,6 @@ def getModel(outputDir, loss_fct, ll, plotsD):
         summary_, loss_ = sess.run([summary_val, loss_val], feed_dict={x_: preprocessing_input.transform(data_val[batch_val_idx,:]), y_: (labels_val[batch_val_idx,:]), w_: weights_val[batch_val_idx,:]})
         losses_val.append(loss_)
         writer.add_summary(summary_, i_step)
-        end_loop = time.time()
 
 
 
