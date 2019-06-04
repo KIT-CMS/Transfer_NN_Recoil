@@ -1,4 +1,4 @@
-xy#!/bin/bash
+#!/bin/bash
 
 LCG_RELEASE=93
 
