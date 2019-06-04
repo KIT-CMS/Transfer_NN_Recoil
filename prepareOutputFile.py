@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 
 
-def prepareOutput(outputD, ll, plotsD, rootFile):
+def prepareOutput(outputD, ll, plotsD, rootFile, NN_MVA):
     NN_Output = h5py.File("%sNN_Output_applied_%s.h5"%(outputD,ll), "r+")
     mZ_x, mZ_y = (NN_Output['MET_GroundTruth'][:,0]), (NN_Output['MET_GroundTruth'][:,1])
     a_x, a_y = (NN_Output['MET_Predictions'][:,0]), (NN_Output['MET_Predictions'][:,1])
@@ -37,26 +37,21 @@ def prepareOutput(outputD, ll, plotsD, rootFile):
     NN_MVA.close()
 
     #Root
-    treename = ll+"_nominal/ntuple"
-    Root_array = rnp.root2array(rootFile, treename=treename)
-    print("shape Root_array", Root_array.shape)
-    NN_array = np.array([NN_LongZ, NN_PerpZ, a_phi, a_r, a_x, a_y],
-              dtype=[('NN_LongZ', np.float32),
-                     ('NN_PerpZ', np.float32),
-                     ('NN_Phi', np.float32),
-                     ('NN_Pt', np.float32),
-                     ('NN_x', np.float32),
-                     ('NN_y', np.float32)]) 
+    #treename = ll+"_nominal/ntuple"
+    #Root_array = rnp.root2array(rootFile, treename=treename)
+    #print("shape Root_array", Root_array.shape)
+    NN_array = np.array([(a_r[i], a_phi[i], a_x[i], a_y[i], NN_LongZ[i], NN_PerpZ[i]) for i in range(len(a_r))],
+              dtype=[('NN_Pt', np.float32), ('NN_Phi', np.float32), ('NN_x', np.float32), ('NN_y', np.float32), ('NN_LongZ', np.float32), ('NN_PerpZ', np.float32)])
     print("shape NN_array", NN_array.shape)   
-    #conc_array = np.concatenate((Root_array, NN_array))
-    #rnp.array2root(conc_array, "%s/NN_MVA_%s.root"%(outputDir,ll), mode='recreate')
+    rnp.array2root(NN_array, "%s/NN_MVA_%s.root"%(outputDir,ll), mode='recreate')
+
 
 
 if __name__ == "__main__":
     outputDir = sys.argv[1]
     ll = sys.argv[2]
     plotsD = sys.argv[3]
-    rootFile = sys.argv[4]
-    NN_MVA = h5py.File("%s/NN_MVA_%s.h5"%(outputDir,ll), "w")
+    rootfile = sys.argv[4]
+    NN_MVAfile = h5py.File("%s/NN_MVA_%s.h5"%(outputDir,ll), "w")
 
-    prepareOutput(outputDir, ll, plotsD, rootFile)
+    prepareOutput(outputDir, ll, plotsD, rootfile, NN_MVAfile)
