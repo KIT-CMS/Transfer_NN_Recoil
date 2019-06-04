@@ -34,6 +34,7 @@ then
 else
     source /cvmfs/sft.cern.ch/lcg/views/LCG_${LCG_RELEASE}/x86_64-slc6-gcc62-opt/setup.sh
 fi
-export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:$PWD/tensorflow_derivative
+#export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/
 
