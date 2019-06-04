@@ -1,5 +1,5 @@
 #!/bin/bash
-source /storage/b/tkopf/jdl_maerz/setup_maerz.sh
+source setup.sh
 training=true
 WSample=false
 lepton=mm
