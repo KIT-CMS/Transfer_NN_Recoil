@@ -22,13 +22,15 @@ def main(args):
     model.add(Dense(output_dim, activation='linear'))
 
     # Load weights and save them as .h5
-    checkpoint_path = tf.train.latest_checkpoint(modelpath)
-    gpu_options = tf.GPUOptions(allow_growth=True)
-    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-    saver = tf.train.Saver()
-    saver.restore(sess, checkpoint_path)
     #TODO extract weights from trained tensorflow model, load them into keras model and save them in .h5
-    #model.load_weights("./BestModel/checkpoint") #FIXME doesn't work that simple :)
+    #FIXME doesn't work that simple :)
+    #modelpath = "BestModel/"
+    #checkpoint_path = tf.train.latest_checkpoint(modelpath)
+    #gpu_options = tf.GPUOptions(allow_growth=True)
+    #sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+    #saver = tf.train.Saver()
+    #saver.restore(sess, checkpoint_path)
+    #model.load_weights("./BestModel/checkpoint") 
     #model.save_weights("NNrecoil_weights.h5")
 
     # Write model to .json
