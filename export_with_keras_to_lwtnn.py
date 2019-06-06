@@ -23,8 +23,6 @@ def main(args):
     for i in range(1, 6):
         weights["w%u"%i] = tf.get_default_graph().get_tensor_by_name("model/w%u:0"%i).eval(session=sess)
         weights["b%u"%i] = tf.get_default_graph().get_tensor_by_name("model/b%u:0"%i).eval(session=sess)
-    #model.load_weights("./BestModel/checkpoint") 
-    #model.save_weights("NNrecoil_weights.h5")
     tf.reset_default_graph()
 
     # Define model structure as in Training.py
@@ -40,9 +38,10 @@ def main(args):
     model.add(Dense(output_dim, activation='linear'))
     model.summary()
 
-    # Load tensorflow weights into keras model
+    # Load tensorflow weights into keras model & save them
     for i in range(5):
         model.layers[i].set_weights([weights["w%u"%(i+1)], weights["b%u"%(i+1)]])
+    model.save_weights("NNrecoil_weights.h5")
 
     # Write model to .json
     with open("NNrecoil_model.json", "w") as f:
