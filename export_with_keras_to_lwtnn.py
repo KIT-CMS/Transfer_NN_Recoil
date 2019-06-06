@@ -3,12 +3,30 @@ import os
 import pickle
 import json
 import tensorflow as tf
+from Training import NNmodel
 
 from keras.models import Sequential
 from keras.layers import Dense
 
 
 def main(args):
+    # Load weights and save them as .h5
+    x = tf.placeholder(tf.float32)
+    logits, f = NNmodel(x, reuse=False)
+    modelpath = "BestModel/"
+    checkpoint_path = tf.train.latest_checkpoint(modelpath)
+    gpu_options = tf.GPUOptions(allow_growth=True)
+    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+    saver = tf.train.Saver()
+    saver.restore(sess, checkpoint_path)
+    weights = {}
+    for i in range(1, 6):
+        weights["w%u"%i] = tf.get_default_graph().get_tensor_by_name("model/w%u:0"%i).eval(session=sess)
+        weights["b%u"%i] = tf.get_default_graph().get_tensor_by_name("model/b%u:0"%i).eval(session=sess)
+    #model.load_weights("./BestModel/checkpoint") 
+    #model.save_weights("NNrecoil_weights.h5")
+    tf.reset_default_graph()
+
     # Define model structure as in Training.py
     input_dim = 19
     output_dim = 2
@@ -16,22 +34,15 @@ def main(args):
     bias_initializer = "Zeros"
     kernel_initializer = "glorot_uniform"
     model = Sequential()
-    model.add(Dense(n_nodes, activation='relu', kernel_initializer=kernel_initializer, bias_initializer=bias_initializer,input_shape=(input_dim,)))
-    for i in range(2):
-        model.add(Dense(n_nodes, activation='relu', kernel_initializer=kernel_initializer, bias_initializer=bias_initializer))
+    model.add(Dense(n_nodes, activation='relu', input_shape=(input_dim,)))
+    for i in range(3):
+        model.add(Dense(n_nodes, activation='relu'))
     model.add(Dense(output_dim, activation='linear'))
+    model.summary()
 
-    # Load weights and save them as .h5
-    #TODO extract weights from trained tensorflow model, load them into keras model and save them in .h5
-    #FIXME doesn't work that simple :)
-    #modelpath = "BestModel/"
-    #checkpoint_path = tf.train.latest_checkpoint(modelpath)
-    #gpu_options = tf.GPUOptions(allow_growth=True)
-    #sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
-    #saver = tf.train.Saver()
-    #saver.restore(sess, checkpoint_path)
-    #model.load_weights("./BestModel/checkpoint") 
-    #model.save_weights("NNrecoil_weights.h5")
+    # Load tensorflow weights into keras model
+    for i in range(5):
+        model.layers[i].set_weights([weights["w%u"%(i+1)], weights["b%u"%(i+1)]])
 
     # Write model to .json
     with open("NNrecoil_model.json", "w") as f:
