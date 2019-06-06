@@ -58,7 +58,7 @@ def main(args):
         'puppimetpx','puppimetpy','puppimetsumet',
         'npv']
     variables_dict = {
-        "class_labels" : ["NN_px", "NN_py"],
+        "class_labels" : ["NNrecoil_px", "NNrecoil_py"],
         "inputs" : [{"name" : v, "offset" : 0.0, "scale" : 1.0} for v in variables_list]
     } 
     scaler = pickle.load(open("./BestModel/preprocessing_input.pickle", "rb"))
